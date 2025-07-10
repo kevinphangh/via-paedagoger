@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIA Pædagoger Forum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'via-blue': '#003e7e',
+                        'via-light': '#0066cc',
+                        'warm-blue': '#1e40af',
+                        'soft-purple': '#7c3aed',
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .gradient-warm {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-via-blue text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-8">
+                    <a href="/" class="text-xl font-bold flex items-center space-x-2">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <span>VIA Pædagoger</span>
+                    </a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="#" class="hover:text-gray-200">Hjem</a>
+                        <a href="#kategorier" class="hover:text-gray-200">Kategorier</a>
+                        <a href="#" class="hover:text-gray-200">Populære</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4" id="authButtons">
+                    <!-- Auth buttons will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="gradient-warm text-white py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-10"></div>
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <div class="animate-float inline-block mb-4">
+                <span class="text-6xl">🤝</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                Velkommen til VIA Pædagoger
+            </h1>
+            <p class="text-xl mb-2 font-light">
+                Dit trygge rum for at dele, lære og vokse sammen
+            </p>
+            <p class="text-lg mb-8 opacity-90">
+                💬 Del dine tanker • 🎓 Få hjælp til studiet • 🌟 Vær helt anonym
+            </p>
+            <div class="flex justify-center space-x-4" id="heroButtons">
+                <button onclick="showRegister()" class="bg-white text-via-blue hover:bg-gray-100 px-6 py-3 rounded-lg font-semibold">
+                    Bliv medlem
+                </button>
+                <a href="#kategorier" class="bg-transparent border-2 border-white hover:bg-white hover:text-via-blue px-6 py-3 rounded-lg font-semibold inline-block">
+                    Udforsk forum
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Welcome Cards -->
+        <div class="grid md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-xl card-hover">
+                <div class="text-3xl mb-3">🛡️</div>
+                <h3 class="font-bold text-gray-800 mb-2">100% Anonymt</h3>
+                <p class="text-sm text-gray-600">Del dine tanker uden bekymringer. Dit rigtige navn forbliver hemmeligt.</p>
+            </div>
+            <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-6 rounded-xl card-hover">
+                <div class="text-3xl mb-3">🤗</div>
+                <h3 class="font-bold text-gray-800 mb-2">Støttende fællesskab</h3>
+                <p class="text-sm text-gray-600">Find hjælp, råd og opbakning fra medstuderende der forstår din rejse.</p>
+            </div>
+            <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl card-hover">
+                <div class="text-3xl mb-3">🌱</div>
+                <h3 class="font-bold text-gray-800 mb-2">Voks sammen</h3>
+                <p class="text-sm text-gray-600">Del erfaringer fra praktik, eksamener og hverdagen som pædagogstuderende.</p>
+            </div>
+        </div>
+
+        <!-- Categories Section -->
+        <section id="kategorier" class="mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold mb-2">Find dit fællesskab 🌟</h2>
+                <p class="text-gray-600">Udforsk forskellige emner og find lige præcis det, du søger</p>
+            </div>
+            <div id="categories" class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Categories will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Recent Threads -->
+        <section class="mb-12">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-3xl font-bold">Seneste samtaler 💭</h2>
+                    <p class="text-gray-600 text-sm mt-1">Se hvad der rører sig i fællesskabet</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-sm font-medium hover:shadow-lg transition-shadow">🔥 Populære</button>
+                    <button class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-full text-sm font-medium transition-colors">⏰ Nyeste</button>
+                </div>
+            </div>
+            <div id="threads" class="space-y-4">
+                <!-- Threads will be loaded here -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
+            <div class="text-center mb-6">
+                <div class="text-4xl mb-3">👋</div>
+                <h2 class="text-2xl font-bold">Velkommen tilbage!</h2>
+                <p class="text-gray-600 text-sm mt-2">Vi har savnet dig i fællesskabet</p>
+            </div>
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Email eller brugernavn</label>
+                    <input type="text" name="username" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-via-light">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">Adgangskode</label>
+                    <input type="password" name="password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-via-light">
+                </div>
+                <button type="submit" class="w-full bg-via-blue hover:bg-blue-800 text-white py-2 rounded-lg font-semibold">
+                    Log ind
+                </button>
+                <p class="mt-4 text-center text-gray-600">
+                    Har du ikke en konto? <a href="#" onclick="showRegister()" class="text-via-light hover:underline">Opret en her</a>
+                </p>
+            </form>
+            <button onclick="closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div class="text-center mb-6">
+                <div class="text-4xl mb-3">🎉</div>
+                <h2 class="text-2xl font-bold">Bliv en del af fællesskabet!</h2>
+                <p class="text-gray-600 text-sm mt-2">Det tager kun et øjeblik at komme i gang</p>
+            </div>
+            <form id="registerForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Brugernavn</label>
+                    <input type="text" name="username" required placeholder="Vælg et unikt brugernavn" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-via-light">
+                    <p class="text-sm text-gray-500 mt-1">Dit offentlige navn på forummet</p>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Email</label>
+                    <input type="email" name="email" required placeholder="din@email.dk" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-via-light">
+                    <p class="text-sm text-gray-500 mt-1">Bruges kun til login og password reset</p>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 mb-2">Adgangskode</label>
+                    <input type="password" name="password" required placeholder="Mindst 6 tegn" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-via-light">
+                </div>
+                <button type="submit" class="w-full bg-via-blue hover:bg-blue-800 text-white py-2 rounded-lg font-semibold">
+                    Opret konto
+                </button>
+                <p class="mt-4 text-center text-gray-600">
+                    Har du allerede en konto? <a href="#" onclick="showLogin()" class="text-via-light hover:underline">Log ind her</a>
+                </p>
+            </form>
+            <button onclick="closeModals()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000/api';
+        let authToken = localStorage.getItem('token');
+        let currentUser = null;
+
+        // Check auth status on load
+        async function checkAuthStatus() {
+            authToken = localStorage.getItem('token');
+            if (authToken) {
+                try {
+                    // Verify token is still valid by making a test request
+                    const response = await fetch(`${API_URL}/threads`, {
+                        headers: { 'x-auth-token': authToken }
+                    });
+                    if (response.ok) {
+                        // Token is valid, get user data from localStorage
+                        const userData = localStorage.getItem('userData');
+                        if (userData) {
+                            currentUser = JSON.parse(userData);
+                            updateAuthUI(true);
+                        }
+                    } else {
+                        // Token expired or invalid
+                        logout();
+                    }
+                } catch (error) {
+                    console.error('Auth check failed:', error);
+                    logout();
+                }
+            } else {
+                updateAuthUI(false);
+            }
+            return true;
+        }
+
+        // Update UI based on auth status
+        function updateAuthUI(isLoggedIn) {
+            const authButtons = document.getElementById('authButtons');
+            const heroButtons = document.getElementById('heroButtons');
+            
+            if (isLoggedIn && currentUser) {
+                authButtons.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <button onclick="showCreateThread()" class="bg-via-light hover:bg-blue-600 px-4 py-2 rounded-md flex items-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            <span>Ny tråd</span>
+                        </button>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-sm">u/${escapeHtml(currentUser.username)}</span>
+                            <span class="text-xs text-gray-300">(${currentUser.karma || 0} karma)</span>
+                        </div>
+                        <button onclick="logout()" class="text-sm hover:text-gray-200">Log ud</button>
+                    </div>
+                `;
+                
+                // Update hero section for logged in users
+                heroButtons.innerHTML = `
+                    <button onclick="showCreateThread()" class="bg-white text-via-blue hover:bg-gray-100 px-6 py-3 rounded-lg font-semibold">
+                        Start en diskussion
+                    </button>
+                    <a href="#kategorier" class="bg-transparent border-2 border-white hover:bg-white hover:text-via-blue px-6 py-3 rounded-lg font-semibold inline-block">
+                        Udforsk forum
+                    </a>
+                `;
+            } else {
+                authButtons.innerHTML = `
+                    <button onclick="showLogin()" class="hover:text-gray-200">Log ind</button>
+                    <button onclick="showRegister()" class="bg-via-light hover:bg-blue-600 px-4 py-2 rounded-md">
+                        Opret konto
+                    </button>
+                `;
+                
+                // Reset hero section for non-logged in users
+                heroButtons.innerHTML = `
+                    <button onclick="showRegister()" class="bg-white text-via-blue hover:bg-gray-100 px-6 py-3 rounded-lg font-semibold">
+                        Bliv medlem
+                    </button>
+                    <a href="#kategorier" class="bg-transparent border-2 border-white hover:bg-white hover:text-via-blue px-6 py-3 rounded-lg font-semibold inline-block">
+                        Udforsk forum
+                    </a>
+                `;
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userData');
+            authToken = null;
+            currentUser = null;
+            updateAuthUI(false);
+            // Reload to refresh the page
+            window.location.reload();
+        }
+
+        // Format time ago helper
+        function formatTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            
+            let interval = Math.floor(seconds / 31536000);
+            if (interval > 1) return interval + " år siden";
+            if (interval === 1) return "1 år siden";
+            
+            interval = Math.floor(seconds / 2592000);
+            if (interval > 1) return interval + " måneder siden";
+            if (interval === 1) return "1 måned siden";
+            
+            interval = Math.floor(seconds / 86400);
+            if (interval > 1) return interval + " dage siden";
+            if (interval === 1) return "1 dag siden";
+            
+            interval = Math.floor(seconds / 3600);
+            if (interval > 1) return interval + " timer siden";
+            if (interval === 1) return "1 time siden";
+            
+            interval = Math.floor(seconds / 60);
+            if (interval > 1) return interval + " minutter siden";
+            if (interval === 1) return "1 minut siden";
+            
+            return "Lige nu";
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // Modal functions
+        function showLogin() {
+            closeModals();
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+
+        function showRegister() {
+            closeModals();
+            document.getElementById('registerModal').classList.remove('hidden');
+        }
+
+        function closeModals() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('registerModal').classList.add('hidden');
+        }
+
+        // Load categories
+        async function loadCategories() {
+            try {
+                const response = await fetch(`${API_URL}/categories`);
+                if (!response.ok) {
+                    throw new Error('Kunne ikke hente kategorier');
+                }
+                const categories = await response.json();
+                
+                const categoryEmojis = {
+                    'Generelt': '💬',
+                    'Praktik': '🏫',
+                    'Eksamen': '📚',
+                    'Studieliv': '🎉'
+                };
+                
+                const html = categories.map(cat => `
+                    <div class="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all duration-300 cursor-pointer card-hover" style="border-top: 3px solid ${cat.color}">
+                        <div class="text-3xl mb-3">${categoryEmojis[cat.name] || '📌'}</div>
+                        <h3 class="text-xl font-semibold mb-2">${cat.name}</h3>
+                        <p class="text-gray-600 mb-4 text-sm">${cat.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium" style="color: ${cat.color}">${cat.threadCount} ${cat.threadCount === 1 ? 'samtale' : 'samtaler'}</span>
+                            <span class="text-xs text-gray-400">Klik for at se mere →</span>
+                        </div>
+                    </div>
+                `).join('');
+                
+                document.getElementById('categories').innerHTML = html;
+            } catch (error) {
+                console.error('Error loading categories:', error);
+                document.getElementById('categories').innerHTML = `
+                    <div class="col-span-full text-center text-gray-500">
+                        <p>Kunne ikke hente kategorier. Tjek at serveren kører.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load threads
+        async function loadThreads() {
+            try {
+                const response = await fetch(`${API_URL}/threads`);
+                if (!response.ok) {
+                    throw new Error('Kunne ikke hente tråde');
+                }
+                const data = await response.json();
+                
+                if (data.threads.length === 0) {
+                    document.getElementById('threads').innerHTML = `
+                        <div class="text-center py-16 bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl">
+                            <div class="text-5xl mb-4">🌱</div>
+                            <h3 class="text-xl font-semibold mb-2">Vær med til at starte samtalen!</h3>
+                            <p class="text-gray-600 mb-6">Der er ingen diskussioner endnu - bliv den første til at dele dine tanker.</p>
+                            <button onclick="showRegister()" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-3 rounded-full font-medium shadow-lg hover:shadow-xl transition-all">
+                                Start den første samtale ✨
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    const html = data.threads.map(thread => `
+                        <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 flex card-hover">
+                            <div class="p-4 flex flex-col items-center justify-start bg-gradient-to-b from-purple-50 to-pink-50 rounded-l-xl">
+                                <button class="text-purple-400 hover:text-purple-600 transition-colors hover:scale-110 transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                                    </svg>
+                                </button>
+                                <span class="font-bold text-lg my-1 ${thread.voteCount > 0 ? 'text-purple-600' : 'text-gray-600'}">${thread.voteCount || 0}</span>
+                                <button class="text-gray-400 hover:text-pink-500 transition-colors hover:scale-110 transform">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="p-6 flex-1">
+                                <div class="flex items-center space-x-2 text-xs text-gray-500 mb-2">
+                                    <span class="px-2 py-1 rounded" style="background-color: ${thread.category?.color}20; color: ${thread.category?.color}">
+                                        ${thread.category?.name || 'Generelt'}
+                                    </span>
+                                    <span>•</span>
+                                    <span>Delt af u/${escapeHtml(thread.author?.username || '[slettet]')}</span>
+                                    <span>•</span>
+                                    <span>${formatTimeAgo(new Date(thread.createdAt))}</span>
+                                </div>
+                                <h3 class="text-xl font-semibold mb-2 hover:text-via-light cursor-pointer">${escapeHtml(thread.title)}</h3>
+                                <p class="text-gray-600 mb-3">${escapeHtml(thread.content.substring(0, 200))}...</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                    <button class="flex items-center space-x-1 hover:bg-gray-100 px-2 py-1 rounded">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                        </svg>
+                                        <span>${thread.commentCount || 0} kommentarer</span>
+                                    </button>
+                                    <button class="flex items-center space-x-1 hover:bg-gray-100 px-2 py-1 rounded">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m9.032 4.026a9.001 9.001 0 01-9.032 0M15.316 10.658a3 3 0 010 2.684m0-2.684C15.114 11.062 15 11.518 15 12c0 .482.114.938.316 1.342"></path>
+                                        </svg>
+                                        <span>Del</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    document.getElementById('threads').innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Error loading threads:', error);
+                document.getElementById('threads').innerHTML = `
+                    <div class="text-center py-12 text-gray-500">
+                        <p>Kunne ikke hente diskussioner. Tjek at serveren kører.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Register form
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Auto-login after registration
+                    localStorage.setItem('token', result.token);
+                    localStorage.setItem('userData', JSON.stringify(result.user));
+                    localStorage.setItem('isNewUser', 'true');
+                    authToken = result.token;
+                    currentUser = result.user;
+                    closeModals();
+                    updateAuthUI(true);
+                    window.location.reload();
+                } else {
+                    alert('Fejl: ' + (result.msg || result.message || 'Kunne ikke oprette konto'));
+                }
+            } catch (error) {
+                alert('Netværksfejl: ' + error.message);
+            }
+        });
+
+        // Login form
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+            
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', result.token);
+                    localStorage.setItem('userData', JSON.stringify(result.user));
+                    authToken = result.token;
+                    currentUser = result.user;
+                    closeModals();
+                    updateAuthUI(true);
+                    window.location.reload();
+                } else {
+                    alert('Fejl: ' + (result.msg || result.message || 'Kunne ikke logge ind'));
+                }
+            } catch (error) {
+                alert('Netværksfejl: ' + error.message);
+            }
+        });
+
+        // Show create thread modal
+        function showCreateThread() {
+            if (!authToken) {
+                showLogin();
+                return;
+            }
+            alert('Opret tråd funktionalitet kommer snart!');
+        }
+
+        // Show welcome message for new users
+        function checkAndShowWelcome() {
+            if (localStorage.getItem('isNewUser') === 'true' && currentUser) {
+                localStorage.removeItem('isNewUser');
+                // Create welcome notification
+                const welcomeDiv = document.createElement('div');
+                welcomeDiv.className = 'fixed top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6 rounded-xl shadow-xl max-w-sm animate-pulse-slow';
+                welcomeDiv.innerHTML = `
+                    <div class="flex items-start">
+                        <div class="text-3xl mr-4">🎊</div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-1">Velkommen, ${escapeHtml(currentUser.username)}!</h3>
+                            <p class="text-sm opacity-90">Du er nu en del af VIA Pædagoger fællesskabet. Start med at udforske kategorierne eller del dine første tanker!</p>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(welcomeDiv);
+                setTimeout(() => {
+                    welcomeDiv.style.transition = 'opacity 0.5s';
+                    welcomeDiv.style.opacity = '0';
+                    setTimeout(() => welcomeDiv.remove(), 500);
+                }, 5000);
+            }
+        }
+
+        // Initialize
+        checkAuthStatus().then(() => {
+            checkAndShowWelcome();
+        });
+        loadCategories();
+        loadThreads();
+
+        // Close modals on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModals();
+            }
+        });
+
+        // Close modals on outside click
+        document.getElementById('loginModal').addEventListener('click', (e) => {
+            if (e.target.id === 'loginModal') {
+                closeModals();
+            }
+        });
+
+        document.getElementById('registerModal').addEventListener('click', (e) => {
+            if (e.target.id === 'registerModal') {
+                closeModals();
+            }
+        });
+    </script>
+</body>
+</html>
