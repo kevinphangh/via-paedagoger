@@ -16,20 +16,15 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50">
-          <Navbar />
-          <main className="container mx-auto px-4 py-8">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/categories" element={<Categories />} />
-              <Route path="/c/:slug" element={<Category />} />
-              <Route path="/thread/:id" element={<Thread />} />
-              <Route path="/create-thread" element={<CreateThread />} />
-              <Route path="/u/:username" element={<Profile />} />
-            </Routes>
-          </main>
+        <div className="min-h-screen bg-gray-100">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/thread/:id" element={<Thread />} />
+            <Route path="/create" element={<CreateThread />} />
+            <Route path="/u/:username" element={<Profile />} />
+          </Routes>
           <Toaster position="bottom-right" />
         </div>
       </Router>

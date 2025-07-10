@@ -33,20 +33,18 @@ function VoteButtons({ type, id, score, upvotes, downvotes, userVote: initialUse
     <div className="flex flex-col items-center">
       <button
         onClick={() => handleVote('upvote')}
-        className={`p-1 rounded hover:bg-gray-100 ${
-          userVote === 'upvote' ? 'text-orange-500' : 'text-gray-400'
-        }`}
+        className={`vote-button ${userVote === 'upvote' ? 'upvoted' : ''}`}
       >
         {userVote === 'upvote' ? (
-          <ChevronUpSolid className="h-6 w-6" />
+          <ChevronUpSolid className="h-5 w-5" />
         ) : (
-          <ChevronUpIcon className="h-6 w-6" />
+          <ChevronUpIcon className="h-5 w-5 text-gray-400 hover:text-orange-500" />
         )}
       </button>
       
-      <span className={`font-medium ${
-        currentScore > 0 ? 'text-orange-500' : 
-        currentScore < 0 ? 'text-blue-500' : 
+      <span className={`text-xs font-bold py-1 ${
+        userVote === 'upvote' ? 'text-orange-500' : 
+        userVote === 'downvote' ? 'text-blue-600' : 
         'text-gray-700'
       }`}>
         {currentScore}
@@ -54,14 +52,12 @@ function VoteButtons({ type, id, score, upvotes, downvotes, userVote: initialUse
       
       <button
         onClick={() => handleVote('downvote')}
-        className={`p-1 rounded hover:bg-gray-100 ${
-          userVote === 'downvote' ? 'text-blue-500' : 'text-gray-400'
-        }`}
+        className={`vote-button ${userVote === 'downvote' ? 'downvoted' : ''}`}
       >
         {userVote === 'downvote' ? (
-          <ChevronDownSolid className="h-6 w-6" />
+          <ChevronDownSolid className="h-5 w-5" />
         ) : (
-          <ChevronDownIcon className="h-6 w-6" />
+          <ChevronDownIcon className="h-5 w-5 text-gray-400 hover:text-blue-600" />
         )}
       </button>
     </div>

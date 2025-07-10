@@ -2,89 +2,89 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 import { da } from 'date-fns/locale';
+import { ChatBubbleLeftIcon, ShareIcon } from '@heroicons/react/24/outline';
 import VoteButtons from './VoteButtons';
-import { ChatBubbleLeftIcon, EyeIcon, TagIcon } from '@heroicons/react/24/outline';
 
-function ThreadList({ threads }) {
+function ThreadList({ threads, expandedThreads, toggleThread }) {
   if (threads.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-8 text-center">
-        <p className="text-gray-500">Ingen tråde fundet</p>
+      <div className="bg-white rounded-lg border p-8 text-center">
+        <p className="text-gray-500">No posts yet</p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {threads.map(thread => (
-        <div key={thread._id} className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
+        <div key={thread._id} className="bg-white rounded border hover:border-gray-400 transition-colors">
           <div className="flex">
-            <div className="mr-4">
+            {/* Upvote/Downvote section */}
+            <div className="w-10 bg-gray-50 py-2 flex flex-col items-center">
               <VoteButtons
                 type="thread"
                 id={thread._id}
-                score={thread.score}
+                score={thread.score || 0}
                 upvotes={thread.upvotes?.length || 0}
                 downvotes={thread.downvotes?.length || 0}
+                userVote={thread.userVote}
               />
             </div>
             
-            <div className="flex-1">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <Link 
-                    to={`/thread/${thread._id}`}
-                    className="text-xl font-semibold text-gray-900 hover:text-via-blue"
-                  >
-                    {thread.title}
-                  </Link>
-                  
-                  <div className="flex items-center space-x-3 mt-1 text-sm text-gray-600">
-                    <Link 
-                      to={`/c/${thread.category?.slug}`}
-                      className="font-medium hover:text-via-blue"
-                      style={{ color: thread.category?.color }}
-                    >
-                      {thread.category?.name}
-                    </Link>
-                    <span>•</span>
-                    <Link to={`/u/${thread.author?.username}`} className="hover:text-via-blue">
-                      {thread.author?.username}
-                    </Link>
-                    <span>•</span>
-                    <span>
-                      {formatDistanceToNow(new Date(thread.createdAt), { 
-                        addSuffix: true, 
-                        locale: da 
-                      })}
-                    </span>
-                  </div>
-                  
-                  {thread.tags?.length > 0 && (
-                    <div className="flex items-center space-x-2 mt-2">
-                      <TagIcon className="h-4 w-4 text-gray-400" />
-                      {thread.tags.map(tag => (
-                        <span 
-                          key={tag} 
-                          className="bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
+            {/* Main content */}
+            <div className="flex-1 p-2">
+              <div className="flex items-center space-x-1 text-xs text-gray-500 mb-1">
+                <span className="font-medium text-gray-700 hover:underline cursor-pointer">
+                  r/{thread.category?.slug || 'general'}
+                </span>
+                <span>•</span>
+                <span>Posted by</span>
+                <Link to={`/u/${thread.author?.username}`} className="hover:underline">
+                  u/{thread.author?.username}
+                </Link>
+                <span>
+                  {formatDistanceToNow(new Date(thread.createdAt), { 
+                    addSuffix: true,
+                    locale: da 
+                  })}
+                </span>
               </div>
               
-              <div className="flex items-center space-x-4 mt-3 text-sm text-gray-600">
-                <div className="flex items-center space-x-1">
+              <h3 className="text-md font-medium text-gray-900 mb-1">
+                <Link 
+                  to={`/thread/${thread._id}`}
+                  className="hover:text-blue-600"
+                  onClick={(e) => {
+                    if (expandedThreads && expandedThreads.has(thread._id)) {
+                      e.preventDefault();
+                      toggleThread(thread._id);
+                    }
+                  }}
+                >
+                  {thread.title}
+                </Link>
+              </h3>
+              
+              {/* Preview content */}
+              {thread.content && expandedThreads && expandedThreads.has(thread._id) && (
+                <div className="text-sm text-gray-700 mb-2 max-w-3xl">
+                  <p className="line-clamp-3">{thread.content}</p>
+                </div>
+              )}
+              
+              {/* Action buttons */}
+              <div className="flex items-center space-x-4 text-xs text-gray-500">
+                <button 
+                  onClick={() => toggleThread && toggleThread(thread._id)}
+                  className="flex items-center space-x-1 p-1 hover:bg-gray-100 rounded"
+                >
                   <ChatBubbleLeftIcon className="h-4 w-4" />
-                  <span>{thread.commentCount} kommentarer</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <EyeIcon className="h-4 w-4" />
-                  <span>{thread.viewCount} visninger</span>
-                </div>
+                  <span>{thread.commentCount || 0} Comments</span>
+                </button>
+                <button className="flex items-center space-x-1 p-1 hover:bg-gray-100 rounded">
+                  <ShareIcon className="h-4 w-4" />
+                  <span>Share</span>
+                </button>
               </div>
             </div>
           </div>

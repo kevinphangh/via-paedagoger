@@ -9,4 +9,40 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #dae0e6;
+}
+
+/* Reddit-style vote buttons */
+.vote-button {
+  @apply p-1 rounded transition-colors;
+}
+
+.vote-button:hover {
+  @apply bg-gray-200;
+}
+
+.vote-button.upvoted {
+  @apply text-orange-500;
+}
+
+.vote-button.downvoted {
+  @apply text-blue-600;
+}
+
+/* Reddit-style post hover effect */
+.reddit-post {
+  @apply bg-white rounded border border-gray-300 hover:border-gray-500 transition-colors;
+}
+
+/* Reddit-style buttons */
+.reddit-button {
+  @apply px-4 py-1.5 rounded-full text-sm font-medium transition-colors;
+}
+
+.reddit-button-primary {
+  @apply bg-blue-500 hover:bg-blue-600 text-white;
+}
+
+.reddit-button-secondary {
+  @apply bg-gray-200 hover:bg-gray-300 text-gray-700;
 }
