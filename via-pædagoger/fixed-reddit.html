@@ -20,7 +20,6 @@
             top: 0;
             width: 100%;
             z-index: 80;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .reddit-search {
@@ -37,9 +36,8 @@
             background-color: white;
             border: 1px solid #ccc;
             border-radius: 4px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             cursor: pointer;
-            transition: border-color 0.1s ease;
         }
         
         .reddit-post-card:hover {
@@ -57,38 +55,22 @@
         .reddit-button {
             align-items: center;
             border-radius: 9999px;
-            display: inline-flex;
+            display: flex;
             font-size: 14px;
             font-weight: 700;
-            padding: 6px 20px;
+            padding: 4px 16px;
             text-decoration: none;
             cursor: pointer;
-            border: 1px solid transparent;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            min-height: 32px;
-            justify-content: center;
+            border: none;
         }
         
         .reddit-button-primary {
             background-color: #0079D3;
             color: white;
-            border-color: #0079D3;
         }
         
         .reddit-button-primary:hover {
             background-color: #0085E5;
-            border-color: #0085E5;
-        }
-        
-        .reddit-button-secondary {
-            background-color: transparent;
-            color: #0079D3;
-            border-color: #0079D3;
-        }
-        
-        .reddit-button-secondary:hover {
-            background-color: #F5F8FA;
         }
         
         .reddit-sidebar {
@@ -155,46 +137,31 @@
         <!-- Header -->
         <header class="reddit-header">
             <div class="flex items-center h-full px-5 mx-auto" style="max-width: 1280px;">
-                <!-- Logo section -->
-                <div class="flex items-center mr-8">
-                    <a href="/" class="flex items-center">
-                        <div class="w-8 h-8 bg-orange-500 rounded-full mr-2 flex items-center justify-center">
-                            <span class="text-white font-bold text-lg">V</span>
-                        </div>
-                        <span class="font-bold text-xl hidden sm:block">VIAPædagoger</span>
-                    </a>
-                </div>
+                <a href="/" class="flex items-center mr-5">
+                    <div class="w-8 h-8 bg-orange-500 rounded-full mr-2 flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">V</span>
+                    </div>
+                    <span class="font-bold text-xl">VIAPædagoger</span>
+                </a>
                 
-                <!-- Search bar -->
-                <div class="flex-1 max-w-xl mx-4 relative">
-                    <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
+                <div class="flex-1 max-w-2xl mx-4 relative">
                     <input type="text" placeholder="Søg VIAPædagoger" class="reddit-search" id="searchInput">
                 </div>
                 
-                <!-- Right section -->
-                <div class="flex items-center space-x-3 ml-4">
-                    <!-- Auth buttons when not logged in -->
-                    <div id="authSection" class="flex items-center space-x-2">
-                        <button id="loginBtn" class="reddit-button reddit-button-secondary">
-                            Log In
-                        </button>
-                        <button id="registerBtn" class="reddit-button reddit-button-primary">
-                            Sign Up
-                        </button>
-                    </div>
-                    
-                    <!-- User section when logged in -->
-                    <div id="userSection" style="display: none;" class="flex items-center space-x-3">
-                        <div class="flex items-center space-x-2">
-                            <div class="w-6 h-6 bg-gray-300 rounded-full"></div>
-                            <span id="username" class="text-sm font-medium"></span>
-                        </div>
-                        <button id="logoutBtn" class="reddit-button reddit-button-secondary">
-                            Log Out
-                        </button>
-                    </div>
+                <div id="authSection">
+                    <button id="loginBtn" class="reddit-button reddit-button-primary mr-2">
+                        Log In
+                    </button>
+                    <button id="registerBtn" class="reddit-button bg-transparent border border-blue-600 text-blue-600">
+                        Sign Up
+                    </button>
+                </div>
+                
+                <div id="userSection" style="display: none;">
+                    <span id="username" class="mr-4"></span>
+                    <button id="logoutBtn" class="reddit-button bg-gray-200 text-gray-700">
+                        Log Out
+                    </button>
                 </div>
             </div>
         </header>
@@ -206,13 +173,10 @@
                     <!-- Feed -->
                     <div class="flex-1">
                         <!-- Create Post Button -->
-                        <div class="bg-white rounded border border-gray-300 mb-4 p-3">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-gray-200 rounded-full"></div>
-                                <button id="createPostBtn" class="flex-1 text-left p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-500 hover:bg-gray-100 hover:border-gray-400 transition-colors">
-                                    Opret et indlæg
-                                </button>
-                            </div>
+                        <div class="bg-white rounded border border-gray-300 mb-4 p-4">
+                            <button id="createPostBtn" class="reddit-button reddit-button-primary w-full justify-center">
+                                + Create Post
+                            </button>
                         </div>
                         
                         <!-- Posts Container -->

@@ -1,27 +1,35 @@
 const express = require('express');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const path = require('path');
-const fs = require('fs');
 
 const app = express();
 const PORT = 3000;
 
-// Serve the Reddit clone
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'reddit.html'));
-});
+// Proxy API requests to backend
+app.use('/api', createProxyMiddleware({
+  target: 'http://localhost:5000',
+  changeOrigin: true,
+  logLevel: 'debug'
+}));
 
 // Serve static files
 app.use(express.static(__dirname));
 
+// Serve index.html for all other routes (for client-side routing)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 app.listen(PORT, () => {
   console.log(`
 ╔════════════════════════════════════════════╗
-║   VIA Pædagoger Forum UI                   ║
+║   VIA Pædagoger Reddit Clone               ║
 ╠════════════════════════════════════════════╣
-║   UI kører på: http://localhost:${PORT}       ║
+║   Frontend: http://localhost:${PORT}         ║
 ║   Backend API: http://localhost:5000       ║
 ╚════════════════════════════════════════════╝
 
-Åbn http://localhost:${PORT} i din browser!
+✅ Frontend server with API proxy is running!
+Open http://localhost:${PORT} to test the app.
 `);
 });

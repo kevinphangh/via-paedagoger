@@ -1,27 +1,34 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
+const proxy = require('http-proxy-middleware');
 
 const app = express();
 const PORT = 3000;
 
-// Serve the Reddit clone
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'reddit.html'));
-});
+// Proxy API requests to backend
+app.use('/api', proxy.createProxyMiddleware({
+  target: 'http://localhost:5000',
+  changeOrigin: true
+}));
 
-// Serve static files
-app.use(express.static(__dirname));
+// Serve React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// Serve the React app for all routes (for client-side routing)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
 
 app.listen(PORT, () => {
   console.log(`
 ╔════════════════════════════════════════════╗
-║   VIA Pædagoger Forum UI                   ║
+║   VIA Pædagoger Reddit Clone               ║
 ╠════════════════════════════════════════════╣
-║   UI kører på: http://localhost:${PORT}       ║
+║   Running at: http://localhost:${PORT}        ║
 ║   Backend API: http://localhost:5000       ║
 ╚════════════════════════════════════════════╝
 
-Åbn http://localhost:${PORT} i din browser!
+IMPORTANT: Clear your browser cache!
+Chrome: Ctrl+Shift+R or Cmd+Shift+R
 `);
 });

@@ -20,7 +20,6 @@
             top: 0;
             width: 100%;
             z-index: 80;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .reddit-search {
@@ -37,9 +36,8 @@
             background-color: white;
             border: 1px solid #ccc;
             border-radius: 4px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             cursor: pointer;
-            transition: border-color 0.1s ease;
         }
         
         .reddit-post-card:hover {
@@ -57,38 +55,22 @@
         .reddit-button {
             align-items: center;
             border-radius: 9999px;
-            display: inline-flex;
+            display: flex;
             font-size: 14px;
             font-weight: 700;
-            padding: 6px 20px;
+            padding: 4px 16px;
             text-decoration: none;
             cursor: pointer;
-            border: 1px solid transparent;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            min-height: 32px;
-            justify-content: center;
+            border: none;
         }
         
         .reddit-button-primary {
             background-color: #0079D3;
             color: white;
-            border-color: #0079D3;
         }
         
         .reddit-button-primary:hover {
             background-color: #0085E5;
-            border-color: #0085E5;
-        }
-        
-        .reddit-button-secondary {
-            background-color: transparent;
-            color: #0079D3;
-            border-color: #0079D3;
-        }
-        
-        .reddit-button-secondary:hover {
-            background-color: #F5F8FA;
         }
         
         .reddit-sidebar {
@@ -138,15 +120,8 @@
             max-width: 600px;
         }
         
-        .error-message {
-            color: #ff4444;
-            font-size: 12px;
-            margin-top: 4px;
-        }
-        
-        .loading {
-            pointer-events: none;
-            opacity: 0.6;
+        #loginForm, #registerForm {
+            display: none;
         }
     </style>
 </head>
@@ -155,46 +130,31 @@
         <!-- Header -->
         <header class="reddit-header">
             <div class="flex items-center h-full px-5 mx-auto" style="max-width: 1280px;">
-                <!-- Logo section -->
-                <div class="flex items-center mr-8">
-                    <a href="/" class="flex items-center">
-                        <div class="w-8 h-8 bg-orange-500 rounded-full mr-2 flex items-center justify-center">
-                            <span class="text-white font-bold text-lg">V</span>
-                        </div>
-                        <span class="font-bold text-xl hidden sm:block">VIAPædagoger</span>
-                    </a>
-                </div>
+                <a href="/" class="flex items-center mr-5">
+                    <div class="w-8 h-8 bg-orange-500 rounded-full mr-2 flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">V</span>
+                    </div>
+                    <span class="font-bold text-xl">VIAPædagoger</span>
+                </a>
                 
-                <!-- Search bar -->
-                <div class="flex-1 max-w-xl mx-4 relative">
-                    <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
+                <div class="flex-1 max-w-2xl mx-4 relative">
                     <input type="text" placeholder="Søg VIAPædagoger" class="reddit-search" id="searchInput">
                 </div>
                 
-                <!-- Right section -->
-                <div class="flex items-center space-x-3 ml-4">
-                    <!-- Auth buttons when not logged in -->
-                    <div id="authSection" class="flex items-center space-x-2">
-                        <button id="loginBtn" class="reddit-button reddit-button-secondary">
-                            Log In
-                        </button>
-                        <button id="registerBtn" class="reddit-button reddit-button-primary">
-                            Sign Up
-                        </button>
-                    </div>
-                    
-                    <!-- User section when logged in -->
-                    <div id="userSection" style="display: none;" class="flex items-center space-x-3">
-                        <div class="flex items-center space-x-2">
-                            <div class="w-6 h-6 bg-gray-300 rounded-full"></div>
-                            <span id="username" class="text-sm font-medium"></span>
-                        </div>
-                        <button id="logoutBtn" class="reddit-button reddit-button-secondary">
-                            Log Out
-                        </button>
-                    </div>
+                <div id="authSection">
+                    <button id="loginBtn" class="reddit-button reddit-button-primary mr-2">
+                        Log In
+                    </button>
+                    <button id="registerBtn" class="reddit-button bg-transparent border border-blue-600 text-blue-600">
+                        Sign Up
+                    </button>
+                </div>
+                
+                <div id="userSection" style="display: none;">
+                    <span id="username" class="mr-4"></span>
+                    <button id="logoutBtn" class="reddit-button bg-gray-200 text-gray-700">
+                        Log Out
+                    </button>
                 </div>
             </div>
         </header>
@@ -206,13 +166,10 @@
                     <!-- Feed -->
                     <div class="flex-1">
                         <!-- Create Post Button -->
-                        <div class="bg-white rounded border border-gray-300 mb-4 p-3">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8 bg-gray-200 rounded-full"></div>
-                                <button id="createPostBtn" class="flex-1 text-left p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-500 hover:bg-gray-100 hover:border-gray-400 transition-colors">
-                                    Opret et indlæg
-                                </button>
-                            </div>
+                        <div class="bg-white rounded border border-gray-300 mb-4 p-4">
+                            <button id="createPostBtn" class="reddit-button reddit-button-primary w-full justify-center">
+                                + Create Post
+                            </button>
                         </div>
                         
                         <!-- Posts Container -->
@@ -250,10 +207,9 @@
         <div class="modal-content">
             <h2 class="text-xl font-bold mb-4">Log in til VIAPædagoger</h2>
             <form id="loginForm">
-                <input type="text" id="loginUsername" placeholder="Brugernavn" class="w-full p-3 border rounded mb-3" required>
-                <input type="password" id="loginPassword" placeholder="Adgangskode" class="w-full p-3 border rounded mb-4" required>
-                <div id="loginError" class="error-message" style="display: none;"></div>
-                <button type="submit" id="loginSubmitBtn" class="reddit-button reddit-button-primary w-full justify-center">Log In</button>
+                <input type="text" id="loginUsername" placeholder="Brugernavn" class="w-full p-3 border rounded mb-3">
+                <input type="password" id="loginPassword" placeholder="Adgangskode" class="w-full p-3 border rounded mb-4">
+                <button type="submit" class="reddit-button reddit-button-primary w-full justify-center">Log In</button>
             </form>
             <button id="closeLogin" class="mt-4 text-gray-500 hover:text-gray-700">Luk</button>
         </div>
@@ -264,13 +220,10 @@
         <div class="modal-content">
             <h2 class="text-xl font-bold mb-4">Tilmeld dig VIAPædagoger</h2>
             <form id="registerForm">
-                <input type="text" id="regUsername" placeholder="Brugernavn (min. 3 tegn)" class="w-full p-3 border rounded mb-3" required minlength="3">
-                <input type="text" id="regFullName" placeholder="Fulde navn" class="w-full p-3 border rounded mb-3" required>
-                <input type="text" id="regStudentId" placeholder="Student ID" class="w-full p-3 border rounded mb-3" required>
-                <input type="email" id="regEmail" placeholder="Email" class="w-full p-3 border rounded mb-3" required>
-                <input type="password" id="regPassword" placeholder="Adgangskode (min. 6 tegn)" class="w-full p-3 border rounded mb-4" required minlength="6">
-                <div id="registerError" class="error-message" style="display: none;"></div>
-                <button type="submit" id="registerSubmitBtn" class="reddit-button reddit-button-primary w-full justify-center">Sign Up</button>
+                <input type="text" id="regUsername" placeholder="Brugernavn" class="w-full p-3 border rounded mb-3">
+                <input type="email" id="regEmail" placeholder="Email" class="w-full p-3 border rounded mb-3">
+                <input type="password" id="regPassword" placeholder="Adgangskode" class="w-full p-3 border rounded mb-4">
+                <button type="submit" class="reddit-button reddit-button-primary w-full justify-center">Sign Up</button>
             </form>
             <button id="closeRegister" class="mt-4 text-gray-500 hover:text-gray-700">Luk</button>
         </div>
@@ -281,10 +234,9 @@
         <div class="modal-content">
             <h2 class="text-xl font-bold mb-4">Opret nyt indlæg</h2>
             <form id="createPostForm">
-                <input type="text" id="postTitle" placeholder="Titel (5-200 tegn)" class="w-full p-3 border rounded mb-3" required minlength="5" maxlength="200">
-                <textarea id="postContent" placeholder="Tekst (min. 10 tegn)" class="w-full p-3 border rounded mb-4 h-32" minlength="10"></textarea>
-                <div id="createPostError" class="error-message" style="display: none;"></div>
-                <button type="submit" id="createPostSubmitBtn" class="reddit-button reddit-button-primary mr-2">Opret</button>
+                <input type="text" id="postTitle" placeholder="Titel" class="w-full p-3 border rounded mb-3" required>
+                <textarea id="postContent" placeholder="Tekst (valgfrit)" class="w-full p-3 border rounded mb-4 h-32"></textarea>
+                <button type="submit" class="reddit-button reddit-button-primary mr-2">Opret</button>
                 <button type="button" id="closeCreatePost" class="reddit-button bg-gray-200 text-gray-700">Annuller</button>
             </form>
         </div>
@@ -294,28 +246,6 @@
         // Global state
         let currentUser = null;
         let posts = [];
-        let categories = [];
-
-        // Axios configuration - set default headers for authentication
-        axios.interceptors.request.use(config => {
-            const token = localStorage.getItem('token');
-            if (token) {
-                config.headers['x-auth-token'] = token;
-            }
-            return config;
-        });
-
-        // Load categories for post creation
-        async function loadCategories() {
-            try {
-                const response = await axios.get('/api/categories');
-                categories = response.data;
-            } catch (error) {
-                console.error('Error loading categories:', error);
-                // Create a default category if none exist
-                categories = [{ _id: 'general', name: 'General', slug: 'general' }];
-            }
-        }
 
         // Check if user is logged in
         function checkAuth() {
@@ -355,7 +285,7 @@
             } catch (error) {
                 console.error('Error loading posts:', error);
                 document.getElementById('postsContainer').innerHTML = 
-                    '<div class="text-center py-8"><p class="text-red-500">Kunne ikke indlæse indlæg. Tjek at backend serveren kører på port 5000.</p></div>';
+                    '<div class="text-center py-8"><p class="text-red-500">Kunne ikke indlæse indlæg</p></div>';
             }
         }
 
@@ -387,8 +317,8 @@
                                 Slået op af u/${post.author?.username || 'anonym'} • 
                                 ${formatTime(post.createdAt)}
                             </div>
-                            <h3 class="text-lg font-medium mb-1">${escapeHtml(post.title)}</h3>
-                            ${post.content ? `<p class="text-sm text-gray-700 mb-2">${escapeHtml(post.content)}</p>` : ''}
+                            <h3 class="text-lg font-medium mb-1">${post.title}</h3>
+                            ${post.content ? `<p class="text-sm text-gray-700 mb-2">${post.content}</p>` : ''}
                             <div class="text-xs text-gray-500 flex items-center space-x-4">
                                 <span>💬 ${post.commentCount || 0} Kommentarer</span>
                                 <span>🎁 Award</span>
@@ -401,21 +331,11 @@
             `).join('');
         }
 
-        function escapeHtml(unsafe) {
-            return unsafe
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
         function formatTime(dateString) {
             const now = new Date();
             const posted = new Date(dateString);
             const diffInMinutes = Math.floor((now - posted) / (1000 * 60));
             
-            if (diffInMinutes < 1) return 'lige nu';
             if (diffInMinutes < 60) return `${diffInMinutes} min. siden`;
             if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)} timer siden`;
             return `${Math.floor(diffInMinutes / 1440)} dage siden`;
@@ -428,7 +348,9 @@
             }
 
             try {
-                const response = await axios.post(`/api/votes/thread/${postId}/${voteType}`);
+                const response = await axios.post(`/api/votes/thread/${postId}/${voteType}`, {}, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                });
                 
                 // Update the post in our local state
                 const postIndex = posts.findIndex(p => p._id === postId);
@@ -439,59 +361,23 @@
                 }
             } catch (error) {
                 console.error('Error voting:', error);
-                if (error.response?.status === 401) {
-                    alert('Du skal være logget ind for at stemme');
-                    localStorage.removeItem('token');
-                    currentUser = null;
-                    updateAuthUI();
-                } else {
-                    alert('Kunne ikke registrere din stemme');
-                }
+                alert('Kunne ikke registrere din stemme');
             }
         }
 
         // Modal functions
         function showModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
-            // Clear any previous error messages
-            const errorDiv = document.querySelector(`#${modalId} .error-message`);
-            if (errorDiv) {
-                errorDiv.style.display = 'none';
-                errorDiv.textContent = '';
-            }
         }
 
         function hideModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
 
-        function showError(errorId, message) {
-            const errorDiv = document.getElementById(errorId);
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-        }
-
-        function setLoading(buttonId, isLoading) {
-            const button = document.getElementById(buttonId);
-            if (isLoading) {
-                button.classList.add('loading');
-                button.textContent = 'Loading...';
-                button.disabled = true;
-            } else {
-                button.classList.remove('loading');
-                button.disabled = false;
-                // Restore original text
-                if (buttonId === 'loginSubmitBtn') button.textContent = 'Log In';
-                if (buttonId === 'registerSubmitBtn') button.textContent = 'Sign Up';
-                if (buttonId === 'createPostSubmitBtn') button.textContent = 'Opret';
-            }
-        }
-
         // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
             checkAuth();
             loadPosts();
-            loadCategories();
 
             // Auth buttons
             document.getElementById('loginBtn').onclick = () => showModal('loginModal');
@@ -520,16 +406,8 @@
             // Login form
             document.getElementById('loginForm').onsubmit = async (e) => {
                 e.preventDefault();
-                setLoading('loginSubmitBtn', true);
-                
-                const username = document.getElementById('loginUsername').value.trim();
+                const username = document.getElementById('loginUsername').value;
                 const password = document.getElementById('loginPassword').value;
-
-                if (!username || !password) {
-                    showError('loginError', 'Udfyld venligst alle felter');
-                    setLoading('loginSubmitBtn', false);
-                    return;
-                }
 
                 try {
                     const response = await axios.post('/api/auth/login', { username, password });
@@ -537,116 +415,51 @@
                     currentUser = response.data.user;
                     updateAuthUI();
                     hideModal('loginModal');
-                    document.getElementById('loginForm').reset();
                     loadPosts(); // Reload to get user votes
                 } catch (error) {
-                    console.error('Login error:', error);
-                    const message = error.response?.data?.message || error.response?.data?.error || 'Login fejlede. Tjek dine oplysninger.';
-                    showError('loginError', message);
-                } finally {
-                    setLoading('loginSubmitBtn', false);
+                    alert('Login fejlede: ' + (error.response?.data?.message || 'Ukendt fejl'));
                 }
             };
 
             // Register form
             document.getElementById('registerForm').onsubmit = async (e) => {
                 e.preventDefault();
-                setLoading('registerSubmitBtn', true);
-                
-                const username = document.getElementById('regUsername').value.trim();
-                const fullName = document.getElementById('regFullName').value.trim();
-                const studentId = document.getElementById('regStudentId').value.trim();
-                const email = document.getElementById('regEmail').value.trim();
+                const username = document.getElementById('regUsername').value;
+                const email = document.getElementById('regEmail').value;
                 const password = document.getElementById('regPassword').value;
 
-                // Client-side validation
-                if (!username || !fullName || !studentId || !email || !password) {
-                    showError('registerError', 'Udfyld venligst alle felter');
-                    setLoading('registerSubmitBtn', false);
-                    return;
-                }
-
-                if (username.length < 3) {
-                    showError('registerError', 'Brugernavn skal være mindst 3 tegn');
-                    setLoading('registerSubmitBtn', false);
-                    return;
-                }
-
-                if (password.length < 6) {
-                    showError('registerError', 'Adgangskode skal være mindst 6 tegn');
-                    setLoading('registerSubmitBtn', false);
-                    return;
-                }
-
                 try {
-                    const response = await axios.post('/api/auth/register', { 
-                        username, 
-                        fullName,
-                        studentId,
-                        email, 
-                        password 
-                    });
+                    const response = await axios.post('/api/auth/register', { username, email, password });
                     localStorage.setItem('token', response.data.token);
                     currentUser = response.data.user;
                     updateAuthUI();
                     hideModal('registerModal');
-                    document.getElementById('registerForm').reset();
                     loadPosts();
                 } catch (error) {
-                    console.error('Registration error:', error);
-                    const message = error.response?.data?.message || error.response?.data?.error || 'Registrering fejlede. Prøv igen.';
-                    showError('registerError', message);
-                } finally {
-                    setLoading('registerSubmitBtn', false);
+                    alert('Registrering fejlede: ' + (error.response?.data?.message || 'Ukendt fejl'));
                 }
             };
 
             // Create post form
             document.getElementById('createPostForm').onsubmit = async (e) => {
                 e.preventDefault();
-                setLoading('createPostSubmitBtn', true);
-                
-                const title = document.getElementById('postTitle').value.trim();
-                const content = document.getElementById('postContent').value.trim();
-
-                // Client-side validation
-                if (!title) {
-                    showError('createPostError', 'Titel er påkrævet');
-                    setLoading('createPostSubmitBtn', false);
-                    return;
-                }
-
-                if (title.length < 5 || title.length > 200) {
-                    showError('createPostError', 'Titel skal være mellem 5 og 200 tegn');
-                    setLoading('createPostSubmitBtn', false);
-                    return;
-                }
-
-                if (content && content.length < 10) {
-                    showError('createPostError', 'Indhold skal være mindst 10 tegn');
-                    setLoading('createPostSubmitBtn', false);
-                    return;
-                }
+                const title = document.getElementById('postTitle').value;
+                const content = document.getElementById('postContent').value;
 
                 try {
-                    // Get the first available category or create a default one
-                    const categoryId = categories.length > 0 ? categories[0]._id : 'general';
-                    
                     await axios.post('/api/threads', { 
                         title, 
-                        content: content || '', 
-                        category: categoryId 
+                        content, 
+                        category: 'general' 
+                    }, {
+                        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                     });
                     
                     hideModal('createPostModal');
                     document.getElementById('createPostForm').reset();
                     loadPosts(); // Reload posts
                 } catch (error) {
-                    console.error('Create post error:', error);
-                    const message = error.response?.data?.message || error.response?.data?.error || 'Kunne ikke oprette indlæg. Prøv igen.';
-                    showError('createPostError', message);
-                } finally {
-                    setLoading('createPostSubmitBtn', false);
+                    alert('Kunne ikke oprette indlæg: ' + (error.response?.data?.message || 'Ukendt fejl'));
                 }
             };
         });
