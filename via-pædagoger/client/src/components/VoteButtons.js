@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
-import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { ChevronUpIcon as ChevronUpSolid, ChevronDownIcon as ChevronDownSolid } from '@heroicons/react/24/solid';
+import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
+import { ArrowUpIcon as ArrowUpSolid, ArrowDownIcon as ArrowDownSolid } from '@heroicons/react/24/solid';
 
 function VoteButtons({ type, id, score, upvotes, downvotes, userVote: initialUserVote }) {
   const { isAuthenticated } = useAuth();
@@ -29,38 +29,43 @@ function VoteButtons({ type, id, score, upvotes, downvotes, userVote: initialUse
     }
   };
 
+  const formatScore = (num) => {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'k';
+    }
+    return num.toString();
+  };
+
   return (
-    <div className="flex flex-col items-center">
+    <>
       <button
         onClick={() => handleVote('upvote')}
-        className={`vote-button ${userVote === 'upvote' ? 'upvoted' : ''}`}
+        className={`reddit-vote-button ${userVote === 'upvote' ? 'upvoted' : ''}`}
+        aria-label="Upvote"
       >
         {userVote === 'upvote' ? (
-          <ChevronUpSolid className="h-5 w-5" />
+          <ArrowUpSolid className="h-5 w-5" />
         ) : (
-          <ChevronUpIcon className="h-5 w-5 text-gray-400 hover:text-orange-500" />
+          <ArrowUpIcon className="h-5 w-5" />
         )}
       </button>
       
-      <span className={`text-xs font-bold py-1 ${
-        userVote === 'upvote' ? 'text-orange-500' : 
-        userVote === 'downvote' ? 'text-blue-600' : 
-        'text-gray-700'
-      }`}>
-        {currentScore}
-      </span>
+      <div className="reddit-vote-score">
+        {formatScore(currentScore)}
+      </div>
       
       <button
         onClick={() => handleVote('downvote')}
-        className={`vote-button ${userVote === 'downvote' ? 'downvoted' : ''}`}
+        className={`reddit-vote-button ${userVote === 'downvote' ? 'downvoted' : ''}`}
+        aria-label="Downvote"
       >
         {userVote === 'downvote' ? (
-          <ChevronDownSolid className="h-5 w-5" />
+          <ArrowDownSolid className="h-5 w-5" />
         ) : (
-          <ChevronDownIcon className="h-5 w-5 text-gray-400 hover:text-blue-600" />
+          <ArrowDownIcon className="h-5 w-5" />
         )}
       </button>
-    </div>
+    </>
   );
 }
 

@@ -2,25 +2,44 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 import { da } from 'date-fns/locale';
-import { ChatBubbleLeftIcon, ShareIcon } from '@heroicons/react/24/outline';
+import { 
+  ChatBubbleLeftIcon, 
+  ShareIcon,
+  BookmarkIcon,
+  EllipsisHorizontalIcon,
+  GiftIcon
+} from '@heroicons/react/24/outline';
 import VoteButtons from './VoteButtons';
 
-function ThreadList({ threads, expandedThreads, toggleThread }) {
+function ThreadList({ threads }) {
   if (threads.length === 0) {
     return (
-      <div className="bg-white rounded-lg border p-8 text-center">
-        <p className="text-gray-500">No posts yet</p>
+      <div className="bg-white rounded border border-gray-300 p-8 text-center">
+        <p className="text-gray-500 text-sm">Der er ingen opslag endnu. Vær den første!</p>
       </div>
     );
   }
 
+  const formatRedditTime = (date) => {
+    const now = new Date();
+    const posted = new Date(date);
+    const diffInSeconds = Math.floor((now - posted) / 1000);
+    
+    if (diffInSeconds < 60) return 'lige nu';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} min. siden`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} timer siden`;
+    if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)} dage siden`;
+    if (diffInSeconds < 31536000) return `${Math.floor(diffInSeconds / 2592000)} måneder siden`;
+    return `${Math.floor(diffInSeconds / 31536000)} år siden`;
+  };
+
   return (
-    <div className="space-y-2">
-      {threads.map(thread => (
-        <div key={thread._id} className="bg-white rounded border hover:border-gray-400 transition-colors">
+    <div>
+      {threads.map((thread, index) => (
+        <div key={thread._id} className="reddit-post-card">
           <div className="flex">
-            {/* Upvote/Downvote section */}
-            <div className="w-10 bg-gray-50 py-2 flex flex-col items-center">
+            {/* Vote section */}
+            <div className="reddit-vote-section">
               <VoteButtons
                 type="thread"
                 id={thread._id}
@@ -31,59 +50,69 @@ function ThreadList({ threads, expandedThreads, toggleThread }) {
               />
             </div>
             
-            {/* Main content */}
-            <div className="flex-1 p-2">
-              <div className="flex items-center space-x-1 text-xs text-gray-500 mb-1">
-                <span className="font-medium text-gray-700 hover:underline cursor-pointer">
-                  r/{thread.category?.slug || 'general'}
-                </span>
-                <span>•</span>
-                <span>Posted by</span>
-                <Link to={`/u/${thread.author?.username}`} className="hover:underline">
-                  u/{thread.author?.username}
+            {/* Post content */}
+            <div className="reddit-post-content">
+              {/* Post meta */}
+              <div className="reddit-post-meta">
+                <Link to={`/r/${thread.category?.slug || 'viapædagoger'}`} className="font-bold hover:underline">
+                  r/{thread.category?.slug || 'viapædagoger'}
                 </Link>
-                <span>
-                  {formatDistanceToNow(new Date(thread.createdAt), { 
-                    addSuffix: true,
-                    locale: da 
-                  })}
+                <span className="mx-1">•</span>
+                <span className="text-xs">
+                  Slået op af
+                  {' '}
+                  <Link to={`/u/${thread.author?.username}`} className="hover:underline">
+                    u/{thread.author?.username}
+                  </Link>
+                  {' '}
+                  {formatRedditTime(thread.createdAt)}
                 </span>
+                {thread.pinned && (
+                  <>
+                    <span className="mx-1">•</span>
+                    <span className="text-green-600 font-bold text-xs">📌 FASTGJORT</span>
+                  </>
+                )}
               </div>
               
-              <h3 className="text-md font-medium text-gray-900 mb-1">
-                <Link 
-                  to={`/thread/${thread._id}`}
-                  className="hover:text-blue-600"
-                  onClick={(e) => {
-                    if (expandedThreads && expandedThreads.has(thread._id)) {
-                      e.preventDefault();
-                      toggleThread(thread._id);
-                    }
-                  }}
-                >
+              {/* Post title */}
+              <h3 className="mb-2">
+                <Link to={`/thread/${thread._id}`} className="reddit-post-title">
                   {thread.title}
                 </Link>
               </h3>
-              
-              {/* Preview content */}
-              {thread.content && expandedThreads && expandedThreads.has(thread._id) && (
-                <div className="text-sm text-gray-700 mb-2 max-w-3xl">
+
+              {/* Post preview */}
+              {thread.content && (
+                <div className="text-sm text-gray-700 mb-2 max-w-2xl">
                   <p className="line-clamp-3">{thread.content}</p>
                 </div>
               )}
               
-              {/* Action buttons */}
-              <div className="flex items-center space-x-4 text-xs text-gray-500">
-                <button 
-                  onClick={() => toggleThread && toggleThread(thread._id)}
-                  className="flex items-center space-x-1 p-1 hover:bg-gray-100 rounded"
-                >
-                  <ChatBubbleLeftIcon className="h-4 w-4" />
-                  <span>{thread.commentCount || 0} Comments</span>
+              {/* Post actions */}
+              <div className="reddit-post-actions">
+                <Link to={`/thread/${thread._id}`} className="reddit-action-button">
+                  <ChatBubbleLeftIcon className="h-5 w-5 mr-1.5" />
+                  <span>{thread.commentCount || 0} Kommentarer</span>
+                </Link>
+                
+                <button className="reddit-action-button">
+                  <GiftIcon className="h-5 w-5 mr-1.5" />
+                  <span>Award</span>
                 </button>
-                <button className="flex items-center space-x-1 p-1 hover:bg-gray-100 rounded">
-                  <ShareIcon className="h-4 w-4" />
-                  <span>Share</span>
+                
+                <button className="reddit-action-button">
+                  <ShareIcon className="h-5 w-5 mr-1.5" />
+                  <span>Del</span>
+                </button>
+                
+                <button className="reddit-action-button">
+                  <BookmarkIcon className="h-5 w-5 mr-1.5" />
+                  <span>Gem</span>
+                </button>
+                
+                <button className="reddit-action-button ml-auto">
+                  <EllipsisHorizontalIcon className="h-5 w-5" />
                 </button>
               </div>
             </div>
