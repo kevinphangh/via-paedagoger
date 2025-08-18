@@ -1,0 +1,9 @@
+# Claude Code settings (user-specific)
+.claude/
+
+# Node modules
+frontend/node_modules/
+
+# Database files
+backend/data/*.db
+backend/data/*.db-*
